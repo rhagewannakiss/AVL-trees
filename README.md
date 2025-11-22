@@ -1,15 +1,16 @@
-# AVL Tree
+# AVL Tree with Range Counting
 
-A generic C++ AVL Tree implementation (HWT) made as a homework for C++ base course 25/26.
-It supports standard BST operations and also **k-th element** and **rank queries** (counting elements $< n$) in **$O(\log N)$** time.
+A generic C++ AVL Tree implementation (HWT) made for the C++ base course 25/26.
+It implements an ordered set that supports insertions and **range counting queries** in **$O(\log N)$** time.
+
+### Task Logic
+For a query `q L R`, the tree calculates the number of keys $x$ such that **$L < x \le R$** (strictly greater than $L$, less than or equal to $R$).
 
 ### Commands
-| Cmd | Description |
-| :--- | :--- |
-| `k <x>` | Insert integer `x`. |
-| `m <k>` | Find the `k`-th smallest element. |
-| `n <x>` | Count elements strictly smaller than `x`. |
-| `s ` | Stop program. |
+| Cmd | Arguments | Description |
+| :--- | :--- | :--- |
+| `k` | `x` | Insert integer `x`. |
+| `q` | `l r` | Print number of elements in range $(l, r]$. |
 
 ### Build & Run
 ```bash
@@ -21,9 +22,9 @@ cmake --build build --parallel `nproc`
 ### Example
 **Input:**
 ```text
-k 8 k 2 k -1 m 1 m 2 n 3
+k 10 k 20 q 8 31 q 6 9 k 30 k 40 q 15 40
 ```
 **Output:**
 ```text
--1 2 2
+2 0 3
 ```

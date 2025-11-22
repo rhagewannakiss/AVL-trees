@@ -83,6 +83,9 @@ public:
     void clear_tree(Node* node) {
         if (!node) {
             return;
+#ifndef NDEBUG
+            std::cerr << "clear_tree: cannot clear empty tree \n";
+#endif //NDEBUG
         }
 
         clear_tree(node->left_);
@@ -91,42 +94,22 @@ public:
         delete(node);
     }
 
-     size_t count_less(const KeyT& key) const {
+    int count_less_or_equal(const KeyT& key) const {
         Node* current = root_;
-        size_t cnt = 0;
+        int cnt = 0;
 
         while (current) {
             if (comp_(key, current->key_)) {
                 current = current->left_;
             } else if (comp_(current->key_, key)) {
-                cnt += get_size(current->left_) + 1;
+                cnt += static_cast<int>(get_size(current->left_)) + 1;
                 current = current->right_;
             } else {
-                cnt += get_size(current->left_);
+                cnt += static_cast<int>(get_size(current->left_)) + 1;
                 return cnt;
             }
         }
         return cnt;
-    }
-
-     int find_kth(int k) const {
-        Node* current = root_;
-        if (!current || k <= 0 || k > static_cast<int>(current->size_)) {
-            return -1;
-        }
-
-        while (current) {
-            size_t left_size = get_size(current->left_);
-            if (left_size + 1 == static_cast<size_t>(k)) {
-                return current->key_;
-            } else if (left_size >= static_cast<size_t>(k)) {
-                current = current->left_;
-            } else {
-                k -= (static_cast<int>(left_size) + 1);
-                current = current->right_;
-            }
-        }
-        return -1;
     }
 
 
@@ -302,6 +285,9 @@ private:
 
     Node* find_min(Node* node) const {
         if (!node) {
+#ifndef NDEBUG
+            std::cerr << "Find node: non-existent node\n";
+#endif //NDEBUG
             return nullptr;
         }
         while (node->left_) {
